@@ -156,7 +156,7 @@ body.loaded .hero-line > span { transform: none; }
 
 /* 3D tilt — transform driven per-frame in JS (rAF + lerp), no CSS transition → real-time follow.
    isolation:isolate keeps the glow/content compositing local; will-change is set JIT in JS (only while hovered). */
-.tilt { isolation: isolate; }
+.tilt { isolation: isolate; will-change: transform; }
 
 /* Static film grain — premium texture, no animation (free to composite) */
 .grain {

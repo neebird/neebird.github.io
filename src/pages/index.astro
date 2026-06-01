@@ -381,6 +381,10 @@ const testimonials = [
         const maxR = parseFloat(card.dataset.tiltMax || '18');
         const maxS = parseFloat(card.dataset.tiltScale || '1.03');
         const persp = parseFloat(card.dataset.tiltPersp || '700');
+        // Reveal cards carry a `transition: transform 0.6s` (for their entrance) which would
+        // smear every per-frame tilt write over 0.6s → laggy tilt. Kill it once on hover so the
+        // rAF lerp is the only smoothing. (The GitHub icon has no reveal class → nothing to kill.)
+        const killTransition = isTilt && /reveal/.test(card.className);
         let rect: DOMRect | null = null;
         let tRx = 0, tRy = 0, tS = 1, tGx = 0, tGy = 0;
         let rx = 0, ry = 0, s = 1, gx = 0, gy = 0;
@@ -392,13 +396,13 @@ const testimonials = [
           if (glow) glow.style.transform = `translate3d(${gx.toFixed(1)}px, ${gy.toFixed(1)}px, 0)`;
           const settled = Math.abs(tRx - rx) < 0.02 && Math.abs(tRy - ry) < 0.02 && Math.abs(tS - s) < 0.002 && Math.abs(tGx - gx) < 0.4 && Math.abs(tGy - gy) < 0.4;
           if (hovering || !settled) raf = requestAnimationFrame(loop);
-          else { raf = 0; card.style.willChange = ''; if (isTilt) card.style.transform = ''; }
+          else { raf = 0; if (isTilt) card.style.transform = ''; }
         };
         const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
         const sample = (e: { clientX: number; clientY: number }, forceRect: boolean) => {
           if (!rect || dirty || forceRect) { rect = card.getBoundingClientRect(); dirty = false; }
           hovering = true;
-          card.style.willChange = 'transform';
+          if (killTransition) card.style.transition = 'none';
           const nx = (e.clientX - rect.left) / rect.width - 0.5;
           const ny = (e.clientY - rect.top) / rect.height - 0.5;
           tRy = nx * maxR; tRx = -ny * maxR; tS = maxS;

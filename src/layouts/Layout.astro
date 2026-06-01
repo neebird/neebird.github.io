@@ -1,0 +1,154 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Oleksandr Shpirko · Python Backend & AI Integration Engineer",
+  description = "Python backend & AI integration engineer. 4+ years shipping FastAPI services, LLM voice agents, RAG, and real-time pipelines. 25+ projects delivered, Top Rated on Upwork. Available for remote work (EU).",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#F5F3F0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14161A" media="(prefers-color-scheme: dark)" />
+
+    <!-- Apply stored theme before paint (no flash) -->
+    <script is:inline>
+      (() => {
+        const r = document.documentElement;
+        r.classList.add('js');
+        try { if (localStorage.getItem('theme') === 'dark') r.setAttribute('data-theme', 'dark'); } catch (e) {}
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- Structured data for recruiters / AI crawlers -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Oleksandr Shpirko",
+      "jobTitle": "Python Backend & AI Integration Engineer",
+      "email": "mailto:shpirko27@gmail.com",
+      "sameAs": ["https://linkedin.com/in/oleksandrshpirko", "https://www.upwork.com/freelancers/~01b4278668b44bcf42"],
+      "knowsAbout": ["Python","FastAPI","Django","PostgreSQL","Redis","Celery","Docker","LLM","RAG","ElevenLabs","OpenAI","Anthropic Claude"],
+      "description": description
+    })} />
+
+    <title>{title}</title>
+  </head>
+  <body>
+    <div id="progress-bar"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300 border-b border-transparent">
+      <div class="max-w-5xl mx-auto px-5 md:px-8">
+        <div class="h-16 flex items-center justify-between">
+          <a href="#top" class="font-mono text-sm font-semibold text-text tracking-tight">
+            oleksandr<span class="text-accent-strong">.shpirko</span>
+          </a>
+
+          <div class="hidden md:flex items-center gap-8">
+            <a href="#work" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">Work</a>
+            <a href="#about" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">About</a>
+            <a href="#contact" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">Contact</a>
+
+            <button id="theme-toggle" aria-label="Toggle dark mode" class="w-9 h-9 grid place-items-center rounded-lg border border-border text-text-secondary hover:text-text hover:border-border-strong transition-colors duration-200">
+              <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+              <svg class="icon-sun hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </button>
+          </div>
+
+          <button id="mobile-menu-btn" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5">
+            <span class="w-5 h-0.5 bg-text transition-transform duration-300" id="bar1"></span>
+            <span class="w-5 h-0.5 bg-text transition-transform duration-300" id="bar2"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-menu" class="md:hidden hidden border-t border-border bg-bg/95">
+        <div class="px-5 py-5 flex flex-col gap-4">
+          <a href="#work" class="text-base text-text-secondary hover:text-text transition-colors">Work</a>
+          <a href="#about" class="text-base text-text-secondary hover:text-text transition-colors">About</a>
+          <a href="#contact" class="text-base text-text-secondary hover:text-text transition-colors">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main"><slot /></main>
+
+    <footer class="border-t border-border py-8">
+      <div class="max-w-5xl mx-auto px-5 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="text-text-muted text-sm font-mono">© 2026 Oleksandr Shpirko</p>
+        <p class="text-text-muted text-xs">Built with Astro · deployed on the edge</p>
+      </div>
+    </footer>
+
+    <script>
+      // Navbar background on scroll (+ progress-bar fallback where CSS scroll timelines aren't supported)
+      const navbar = document.getElementById('navbar');
+      const bar = document.getElementById('progress-bar');
+      const barNeedsJs = bar && !CSS.supports('animation-timeline', 'scroll()');
+      const onScroll = () => {
+        const y = window.scrollY;
+        if (navbar) {
+          navbar.classList.toggle('bg-bg/80', y > 30);
+          navbar.classList.toggle('backdrop-blur-md', y > 30);
+          navbar.classList.toggle('border-border', y > 30);
+          navbar.classList.toggle('border-transparent', y <= 30);
+        }
+        if (barNeedsJs) {
+          const h = document.documentElement.scrollHeight - window.innerHeight;
+          bar!.style.transform = 'scaleX(' + (h > 0 ? y / h : 0) + ')';
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // Mobile menu
+      const btn = document.getElementById('mobile-menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      const setMenu = (open: boolean) => {
+        menu?.classList.toggle('hidden', !open);
+        btn?.classList.toggle('open', open);
+        btn?.setAttribute('aria-expanded', String(open));
+      };
+      btn?.addEventListener('click', () => setMenu(menu?.classList.contains('hidden') ?? false));
+      menu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+
+      // Theme toggle (light default ↔ dark)
+      const root = document.documentElement;
+      const tg = document.getElementById('theme-toggle');
+      const moon = tg?.querySelector('.icon-moon');
+      const sun = tg?.querySelector('.icon-sun');
+      const sync = () => {
+        const dark = root.getAttribute('data-theme') === 'dark';
+        moon?.classList.toggle('hidden', dark);
+        sun?.classList.toggle('hidden', !dark);
+      };
+      sync();
+      tg?.addEventListener('click', () => {
+        const dark = root.getAttribute('data-theme') === 'dark';
+        if (dark) { root.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
+        else { root.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+        sync();
+      });
+    </script>
+  </body>
+</html>

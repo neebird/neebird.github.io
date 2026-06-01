@@ -201,18 +201,24 @@ const testimonials = [
       </div>
 
       <div class="md:col-span-5 reveal-r">
-        <div class="lift rounded-2xl border border-border bg-surface overflow-hidden">
+        <div class="lift terminal-card rounded-2xl border border-border bg-surface overflow-hidden">
           <div class="flex items-center gap-1.5 px-4 py-3 border-b border-border">
             <span class="w-2.5 h-2.5 rounded-full" style="background:#FF5F57"></span>
             <span class="w-2.5 h-2.5 rounded-full" style="background:#FEBC2E"></span>
             <span class="w-2.5 h-2.5 rounded-full" style="background:#28C840"></span>
             <span class="font-mono text-xs text-text-muted ml-2">engineer.py</span>
           </div>
-          <div class="p-5 font-mono text-sm leading-relaxed space-y-1">
-            <div class="text-text-secondary">role = <span class="text-text">"Backend &amp; AI"</span></div>
-            <div class="text-text-secondary">years = <span class="text-text">4</span></div>
-            <div class="text-text-secondary">stack = [<span class="text-text">"FastAPI"</span>, <span class="text-text">"LLMs"</span>]</div>
-            <div class="text-text-secondary">status = <span class="text-accent-strong">"open to work"</span></div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <div id="term-code" class="space-y-1">
+              <div class="text-text-secondary">role = <span class="text-text">"Backend &amp; AI"</span></div>
+              <div class="text-text-secondary">years = <span class="text-text">4</span></div>
+              <div class="text-text-secondary">stack = [<span class="text-text">"FastAPI"</span>, <span class="text-text">"LLMs"</span>]</div>
+              <div class="text-text-secondary">status = <span class="text-accent-strong">"open to work"</span></div>
+            </div>
+            <div class="term-out-wrap" aria-hidden="true"><div>
+              <div class="mt-3 pt-3 border-t border-border text-text-muted">&gt;&gt;&gt; <span class="text-text">hire(oleksandr)</span></div>
+              <div class="text-text-muted"><span class="text-accent-strong">True</span>  # replies within a day</div>
+            </div></div>
           </div>
         </div>
       </div>
@@ -449,5 +455,46 @@ const testimonials = [
       entries.forEach((e) => { if (e.isIntersecting) { animateCount(e.target as HTMLElement); cio.unobserve(e.target); } });
     }, { threshold: 0.6 });
     document.querySelectorAll<HTMLElement>('.count').forEach(c => cio.observe(c));
+
+    // Terminal typewriter (engineer.py): types the code out on first reveal, blinking caret.
+    (() => {
+      const code = document.getElementById('term-code');
+      if (!code) return;
+      const MAP: Record<string, string> = { sec: 'text-text-secondary', txt: 'text-text', acc: 'text-accent-strong' };
+      const lines: [string, string][][] = [
+        [['role = ', 'sec'], ['"Backend & AI"', 'txt']],
+        [['years = ', 'sec'], ['4', 'txt']],
+        [['stack = [', 'sec'], ['"FastAPI"', 'txt'], [', ', 'sec'], ['"LLMs"', 'txt'], [']', 'sec']],
+        [['status = ', 'sec'], ['"open to work"', 'acc']],
+      ];
+      const seq: ([string, string] | null)[] = [];
+      lines.forEach((ln, i) => { if (i) seq.push(null); ln.forEach(([t, c]) => { for (const ch of t) seq.push([ch, c]); }); });
+      const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const render = (n: number) => {
+        let html = '', cur: string | null = null, buf = '';
+        const flush = () => { if (buf) { html += `<span class="${MAP[cur as string]}">${esc(buf)}</span>`; buf = ''; } };
+        for (let i = 0; i < n; i++) {
+          const it = seq[i];
+          if (it === null) { flush(); html += '<br>'; cur = null; continue; }
+          if (it[1] !== cur) { flush(); cur = it[1]; }
+          buf += it[0];
+        }
+        flush();
+        code.innerHTML = html + '<span class="caret">▋</span>';
+      };
+      if (reduce) { render(seq.length); return; }
+      let started = false;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && !started) {
+            started = true; io.disconnect();
+            let n = 0;
+            const tick = () => { render(n); if (n++ < seq.length) setTimeout(tick, 26); };
+            tick();
+          }
+        });
+      }, { threshold: 0.4 });
+      io.observe(code);
+    })();
   </script>
 </Layout>

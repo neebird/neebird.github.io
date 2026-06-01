@@ -172,7 +172,7 @@ body.loaded .hero-line > span { transform: none; }
   box-shadow: 0 18px 40px -14px rgba(10, 12, 16, 0.28);
   opacity: 0; transition: opacity 0.25s var(--ease); pointer-events: none;
 }
-.lift:hover { transform: translateY(-4px); }
+.lift:hover { transform: translateY(-4px) !important; }  /* !important beats the reveal animation's filled transform */
 .lift:hover::after { opacity: 1; }
 
 /* Magnetic primary CTA */
@@ -193,7 +193,7 @@ body.loaded .hero-line > span { transform: none; }
 
 /* Testimonial cards — grow on hover so the hovered review pops */
 .tcard { position: relative; transition: transform 0.3s var(--ease), box-shadow 0.3s ease, border-color 0.3s ease; }
-.tcard:hover { transform: scale(1.04); border-color: var(--color-border-strong); box-shadow: 0 18px 40px -16px rgba(10, 12, 16, 0.28); z-index: 1; }
+.tcard:hover { transform: scale(1.04) !important; border-color: var(--color-border-strong); box-shadow: 0 18px 40px -16px rgba(10, 12, 16, 0.28); z-index: 1; }
 
 /* Stat numbers — subtle hover tint (muted, harmonizes with teal, works on light + dark) */
 .stat { cursor: default; }
@@ -201,6 +201,14 @@ body.loaded .hero-line > span { transform: none; }
 .stat-green:hover .num { color: #4F9E76; }   /* Upwork */
 .stat-gold:hover  .num { color: #C29A45; }   /* rating  */
 .stat-blue:hover  .num { color: #5C84C2; }   /* success */
+
+/* Terminal typewriter caret + hover "run" output (engineer.py) */
+.caret { display: inline-block; color: var(--color-accent-strong); margin-left: 1px; animation: blink 1s step-end infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.term-out-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s var(--ease); }
+.term-out-wrap > div { overflow: hidden; opacity: 0; transition: opacity 0.35s var(--ease); }
+.terminal-card:hover .term-out-wrap { grid-template-rows: 1fr; }
+.terminal-card:hover .term-out-wrap > div { opacity: 1; }
 
 /* Word-by-word heading reveal (armed by JS; safe if JS off / reduced-motion) */
 .split-reveal.armed .w {
@@ -304,7 +312,7 @@ body.loaded .hero-line > span { transform: none; }
   .reveal, .reveal-l, .reveal-r, .reveal-scale { opacity: 1 !important; transform: none !important; animation: none !important; }
   .js .clip-reveal { opacity: 1 !important; clip-path: none !important; }
   .split-reveal.armed .w { opacity: 1 !important; transform: none !important; }
-  .magnetic, .tilt, .tcard:hover { transform: none !important; }
+  .magnetic, .tilt, .tcard:hover, .lift:hover { transform: none !important; }
   .aurora span, .parallax, .scroll-cue, .marquee-track { animation: none !important; transform: none !important; }
   .js .sweep { color: var(--color-text) !important; background: none !important; }
   #progress-bar { display: none; }

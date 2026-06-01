@@ -22,15 +22,16 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#F5F3F0" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#14161A" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#14161A" id="theme-color-meta" />
 
     <!-- Apply stored theme before paint (no flash) -->
     <script is:inline>
       (() => {
         const r = document.documentElement;
         r.classList.add('js');
-        try { if (localStorage.getItem('theme') === 'dark') r.setAttribute('data-theme', 'dark'); } catch (e) {}
+        // Dark by default; only light if the visitor explicitly chose it.
+        try { if (localStorage.getItem('theme') !== 'light') r.setAttribute('data-theme', 'dark'); }
+        catch (e) { r.setAttribute('data-theme', 'dark'); }
       })();
     </script>
 
@@ -137,10 +138,12 @@ const {
       const tg = document.getElementById('theme-toggle');
       const moon = tg?.querySelector('.icon-moon');
       const sun = tg?.querySelector('.icon-sun');
+      const tcMeta = document.getElementById('theme-color-meta');
       const sync = () => {
         const dark = root.getAttribute('data-theme') === 'dark';
         moon?.classList.toggle('hidden', dark);
         sun?.classList.toggle('hidden', !dark);
+        tcMeta?.setAttribute('content', dark ? '#14161A' : '#F5F3F0');
       };
       sync();
       tg?.addEventListener('click', () => {

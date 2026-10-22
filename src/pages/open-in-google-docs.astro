@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 
 const repo = "https://github.com/neebird/open-in-google-docs";
-const release = `${repo}/releases/tag/v1.0.0`;
+const release = `${repo}/releases/latest`;
 const setupDocs = `${repo}#setup`;
 
 const actions = [
@@ -52,7 +52,7 @@ const setup = [
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:translate-x-1"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a href={release} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 rounded-lg border border-border-strong text-text font-medium text-base hover:border-text transition-colors duration-200">
-          Download v1.0.0
+          Download latest release
         </a>
         <span class="font-mono text-sm text-text-muted">MIT · Python standard library only</span>
       </div>

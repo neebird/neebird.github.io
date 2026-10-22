@@ -301,6 +301,20 @@ body.loaded .hero-line > span { transform: none; }
   @keyframes progress-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 }
 
+/* Privacy policy and terms pages (src/layouts/Legal.astro) */
+.legal h2 { font-size: 1.35rem; font-weight: 600; margin-top: 2.75rem; }
+.legal p, .legal ul { margin-top: 0.9rem; }
+.legal ul { list-style: disc; padding-left: 1.25rem; }
+.legal li + li { margin-top: 0.5rem; }
+.legal li::marker { color: var(--color-text-muted); }
+.legal a { color: var(--color-accent-strong); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.legal a:hover { color: var(--color-text); }
+.legal code {
+  font-family: var(--font-mono); font-size: 0.85em; color: var(--color-text);
+  background: var(--color-surface-2); padding: 0.1em 0.35em; border-radius: 4px;
+  overflow-wrap: anywhere;
+}
+
 /* Reduced motion — show final state, kill movement */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

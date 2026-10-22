@@ -1,0 +1,41 @@
+---
+// Shared frame for the Open in Google Docs privacy policy and terms pages.
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;  // "Privacy Policy" or "Terms of Service"
+  description: string;
+  updated: string;  // shown as "Last updated: …"
+}
+
+const { title, description, updated } = Astro.props;
+const project = "/open-in-google-docs/";
+const pages = [
+  { href: `${project}privacy/`, label: "Privacy Policy" },
+  { href: `${project}terms/`, label: "Terms of Service" },
+];
+---
+
+<Layout title={`${title} · Open in Google Docs`} description={description}>
+  <section class="pt-32 pb-20 md:pb-28">
+    <div class="max-w-5xl mx-auto px-5 md:px-8">
+      <a href={project} class="ul-grow font-mono text-sm text-text-muted hover:text-text transition-colors duration-200">← Open in Google Docs</a>
+      <span class="block font-mono text-sm text-accent-strong tracking-widest uppercase mt-10">Open in Google Docs</span>
+      <h1 class="font-bold tracking-tight mt-3 mb-4" style="font-size: clamp(2.2rem, 4.5vw, 3rem); line-height: 1.05;">{title}</h1>
+      <p class="font-mono text-sm text-text-muted">Last updated: {updated}</p>
+
+      <div class="legal prose-measure mt-10 text-base leading-relaxed">
+        <slot />
+      </div>
+
+      <nav aria-label="Legal" class="prose-measure mt-16 pt-6 border-t border-border flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
+        {pages.map((p) => (
+          p.label === title
+            ? <span class="text-text" aria-current="page">{p.label}</span>
+            : <a href={p.href} class="ul-grow text-text-muted hover:text-text transition-colors duration-200">{p.label}</a>
+        ))}
+        <a href={project} class="ul-grow text-text-muted hover:text-text transition-colors duration-200">Project page</a>
+      </nav>
+    </div>
+  </section>
+</Layout>

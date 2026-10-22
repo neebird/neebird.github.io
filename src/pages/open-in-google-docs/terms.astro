@@ -1,0 +1,71 @@
+---
+import Legal from '../../layouts/Legal.astro';
+
+const repo = "https://github.com/neebird/open-in-google-docs";
+---
+
+<Legal
+  title="Terms of Service"
+  description="Terms for using Open in Google Docs, a free, open-source macOS tool released under the MIT License."
+  updated="22 October 2026"
+>
+  <p>
+    These terms cover <a href="/open-in-google-docs/">Open in Google Docs</a>, a free, open-source macOS tool made by
+    Oleksandr Shpirko, and this website. By installing or using the tool, you agree to them.
+  </p>
+
+  <h2>License</h2>
+  <p>
+    The source code is published under the <a href={`${repo}/blob/main/LICENSE`}>MIT License</a>. You may use, copy,
+    modify and share it under that license. Where these terms and the license differ, the license applies to the code.
+  </p>
+
+  <h2>No account, no service</h2>
+  <p>
+    There is no account, subscription or server. The tool runs on your Mac and sends your files directly to your own
+    Google Drive. It’s free, with nothing to buy.
+  </p>
+
+  <h2>Your Google account</h2>
+  <p>
+    You use the tool with your own Google account and your own Google Cloud OAuth client. You’re responsible for following
+    the <a href="https://policies.google.com/terms">Google Terms of Service</a> and the
+    <a href="https://developers.google.com/terms">Google APIs Terms of Service</a>, and for the limits of your account,
+    such as Drive storage.
+  </p>
+
+  <h2>Your files</h2>
+  <p>
+    Only upload files you have the right to upload. Google does the conversion, and the result may differ from the original:
+    formatting can change, and CSV files are read with US conventions for numbers and dates. The tool never changes or
+    deletes the files on your Mac.
+  </p>
+
+  <h2>No warranty</h2>
+  <p>
+    The tool is provided “as is”, without warranty of any kind, as stated in the MIT License. I don’t promise that it will
+    work with every file, every macOS version or every future change to Google’s services.
+  </p>
+
+  <h2>Limitation of liability</h2>
+  <p>
+    To the extent the law allows, I’m not liable for any damage or loss that comes from using the tool or this website,
+    including lost data, failed or inaccurate conversions and problems with your Google account.
+  </p>
+
+  <h2>Trademarks</h2>
+  <p>
+    Google, Google Docs, Google Sheets and Google Drive are trademarks of Google LLC. Microsoft Word and Microsoft Excel are
+    trademarks of Microsoft Corporation. macOS and Finder are trademarks of Apple Inc. This project is not affiliated with
+    or endorsed by Google, Microsoft or Apple.
+  </p>
+
+  <h2>Changes</h2>
+  <p>I may update these terms. The new version will appear on this page with a new date at the top.</p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions: open an issue on <a href={`${repo}/issues`}>GitHub</a> or email
+    <a href="mailto:shpirko27@gmail.com">shpirko27@gmail.com</a>.
+  </p>
+</Legal>

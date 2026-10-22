@@ -1,0 +1,108 @@
+---
+import Legal from '../../layouts/Legal.astro';
+
+const repo = "https://github.com/neebird/open-in-google-docs";
+---
+
+<Legal
+  title="Privacy Policy"
+  description="How Open in Google Docs handles your files and Google data: it runs on your Mac, sends files only to your own Google Drive and collects nothing."
+  updated="22 October 2026"
+>
+  <p>
+    <a href="/open-in-google-docs/">Open in Google Docs</a> is a free, open-source macOS tool made by Oleksandr Shpirko.
+    It runs on your Mac and talks directly to Google. There is no server of mine in between, and the tool never sends anything to me.
+  </p>
+
+  <h2>What the tool does with your files</h2>
+  <p>
+    When you run one of its Quick Actions, the tool reads the files you selected in Finder and uploads them to your own
+    Google Drive through the Google Drive API. Google converts them to Google Docs or Google Sheets, and the tool opens
+    the new document in your default browser.
+  </p>
+  <p>
+    Each upload contains the file’s name and contents, the ID of the “From Mac” folder in your Drive and a random tag.
+    The tag lets the tool find its own upload if Google stops responding halfway through, so the same file isn’t uploaded twice.
+  </p>
+  <p>The tool never changes or deletes the files on your Mac.</p>
+
+  <h2>Google user data</h2>
+  <p>
+    You sign in through your own Google Cloud OAuth client, so Google’s sign-in screen shows your own project.
+    I have no access to that project, your tokens or your files.
+  </p>
+  <p>
+    The tool asks for one permission, the <code>drive.file</code> scope. With it, the tool can only see and change files
+    it created itself, such as the converted documents and the “From Mac” folder. It can’t see the rest of your Drive
+    or anything else in your Google account.
+  </p>
+  <p>
+    It uses this access only to create the converted files, find the “From Mac” folder and look up its own uploads after a timeout.
+    The use and transfer of information received from Google APIs adheres to the
+    <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>,
+    including the Limited Use requirements. Your Google data is not sold, not used for advertising, not shared with anyone
+    and not read by people.
+  </p>
+
+  <h2>What stays on your Mac</h2>
+  <ul>
+    <li>
+      Your Google sign-in (client ID, client secret and refresh token) is stored by rclone in its config file, usually
+      <code>~/.config/rclone/rclone.conf</code>. The tool only reads it.
+    </li>
+    <li>
+      A short-lived access token, valid for about an hour, is cached in <code>~/Library/Caches/to_gdocs/token.json</code>.
+      Only your macOS user account can read it.
+    </li>
+    <li>
+      Each run is logged to <code>~/Library/Logs/to_gdocs.log</code>: file names, links to the new documents and any
+      error messages from Google.
+    </li>
+  </ul>
+  <p>The tokens are sent only to Google, to authorize requests. Nothing else in this list leaves your Mac.</p>
+
+  <h2>No analytics or tracking</h2>
+  <p>
+    The tool has no analytics, telemetry, crash reporting, ads or update checks. It connects only to Google:
+    <code>oauth2.googleapis.com</code> to refresh the access token and <code>www.googleapis.com</code> for Google Drive.
+    When you need to sign in again, it starts rclone, which opens Google’s sign-in page in your browser.
+  </p>
+
+  <h2>Other services</h2>
+  <ul>
+    <li>Google stores and processes the files you upload under the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</li>
+    <li><a href="https://rclone.org">rclone</a> handles the Google sign-in. It is separate open-source software that you install yourself.</li>
+  </ul>
+
+  <h2>Removing your data</h2>
+  <ul>
+    <li>
+      Run <code>./uninstall.sh</code> to remove the Quick Actions and the cached token. Delete
+      <code>~/Library/Logs/to_gdocs.log</code> if you want the log gone too.
+    </li>
+    <li>Converted files stay in your Google Drive until you delete them.</li>
+    <li>
+      To revoke access, remove your app under
+      <a href="https://myaccount.google.com/connections">Third-party apps &amp; services</a> in your Google Account
+      and delete the rclone remote with <code>rclone config delete gdrive</code>.
+    </li>
+  </ul>
+
+  <h2>This website</h2>
+  <p>
+    This site is hosted on GitHub Pages and has no cookies or analytics. GitHub may log visitors’ IP addresses for security,
+    as described in the
+    <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>.
+    The fonts come from Google Fonts, so your browser also contacts Google when a page loads. If you switch between
+    light and dark mode, the choice is saved in your browser and stays on your device.
+  </p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, the new version will appear on this page with a new date at the top.</p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about privacy: open an issue on <a href={`${repo}/issues`}>GitHub</a> or email
+    <a href="mailto:shpirko27@gmail.com">shpirko27@gmail.com</a>.
+  </p>
+</Legal>

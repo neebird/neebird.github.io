@@ -1,0 +1,148 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const repo = "https://github.com/neebird/open-in-google-docs";
+const release = `${repo}/releases/tag/v1.0.0`;
+const setupDocs = `${repo}#setup`;
+
+const actions = [
+  { name: "↗ Open in Google Docs", files: [".docx", ".doc", ".odt", ".rtf"], becomes: "native Google Docs" },
+  { name: "↗ Open in Google Sheets", files: [".xlsx", ".xlsm", ".xls", ".ods", ".csv", ".tsv"], becomes: "native Google Sheets" },
+];
+
+const how = [
+  {
+    title: "One request per file",
+    text: "Upload and conversion happen in a single Google Drive API call: about 3–5 seconds per file, up to 8 files at a time. Most of that time is Google converting the file.",
+  },
+  {
+    title: "No duplicates when Google goes quiet",
+    text: "Every upload carries a random tag in its Drive appProperties. If Google stops answering mid-upload, the tool looks the file up by that tag and opens it instead of uploading it twice.",
+  },
+  {
+    title: "Errors you can act on",
+    text: "Password-protected or damaged file, no internet, full Drive, sign-in needed: each one gets its own macOS notification, in English, Russian or Ukrainian.",
+  },
+];
+
+const setup = [
+  "macOS 12 or later, the Xcode Command Line Tools and rclone (brew install rclone).",
+  "Your own free Google Cloud OAuth client with the Drive API: a few minutes, step by step in the README.",
+  "./install.sh adds both Quick Actions to Finder.",
+];
+---
+
+<Layout
+  title="Open in Google Docs · Finder Quick Action for macOS"
+  description="Right-click Word, Excel or CSV files in Finder and open them as native Google Docs and Sheets a few seconds later. Open source, Python standard library only."
+  image="/open-in-google-docs/preview.png"
+>
+  <!-- Hero -->
+  <section class="pt-32 pb-12 md:pb-16">
+    <div class="max-w-5xl mx-auto px-5 md:px-8">
+      <a href="/#work" class="ul-grow font-mono text-sm text-text-muted hover:text-text transition-colors duration-200">← Portfolio</a>
+      <span class="block font-mono text-sm text-accent-strong tracking-widest uppercase mt-10">Open source · macOS</span>
+      <h1 class="font-bold tracking-tight mt-3 mb-6" style="font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.05;">Open in Google Docs</h1>
+      <p class="prose-measure text-text-secondary mb-9" style="font-size: 1.3rem; line-height: 1.5;">
+        A Finder Quick Action: right-click Word, Excel or CSV files and they open as native Google Docs and Sheets a few seconds later. No Google Drive for desktop, no sync folder.
+      </p>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href={repo} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-lg font-medium text-base hover:bg-accent-hover transition-colors duration-200">
+          View on GitHub
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:translate-x-1"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href={release} target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 rounded-lg border border-border-strong text-text font-medium text-base hover:border-text transition-colors duration-200">
+          Download v1.0.0
+        </a>
+        <span class="font-mono text-sm text-text-muted">MIT · Python standard library only</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="pb-16 md:pb-24">
+    <div class="max-w-5xl mx-auto px-5 md:px-8">
+      <figure class="rounded-2xl border border-border bg-surface p-2 md:p-3">
+        <img src="/open-in-google-docs/demo.gif" width="900" height="563" class="w-full h-auto rounded-xl"
+          alt="Right-click a Word file in Finder, choose Quick Actions → Open in Google Docs, and it opens as a Google Doc" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- What it does -->
+  <section class="section-pad border-t border-border">
+    <div class="max-w-5xl mx-auto px-5 md:px-8">
+      <span class="font-mono text-sm text-accent-strong tracking-widest uppercase">What it does</span>
+      <h2 class="font-semibold mt-3 mb-10" style="font-size: clamp(1.9rem, 4vw, 2.4rem);">Two items in the right-click menu</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {actions.map((a) => (
+          <article class="rounded-2xl bg-surface border border-border p-6">
+            <h3 class="font-semibold text-text text-xl mb-4">{a.name}</h3>
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              {a.files.map((f) => (
+                <span class="font-mono text-xs px-2 py-1 rounded-md bg-surface-2 text-text-secondary">{f}</span>
+              ))}
+            </div>
+            <p class="text-text-secondary text-base">→ {a.becomes}, opened in your browser.</p>
+          </article>
+        ))}
+      </div>
+      <p class="mt-6 text-text-muted text-base prose-measure">
+        Converted files go to a “From Mac” folder in your Google Drive. The notifications and the folder name follow your macOS language.
+      </p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section-pad border-t border-border">
+    <div class="max-w-5xl mx-auto px-5 md:px-8">
+      <span class="font-mono text-sm text-accent-strong tracking-widest uppercase">How it works</span>
+      <h2 class="font-semibold mt-3 mb-10" style="font-size: clamp(1.9rem, 4vw, 2.4rem);">Small script, careful details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {how.map((h, i) => (
+          <article class="rounded-2xl bg-surface border border-border p-6">
+            <span class="font-mono text-xs text-text-muted">0{i + 1}</span>
+            <h3 class="font-semibold text-text text-lg mt-3 mb-3">{h.title}</h3>
+            <p class="text-text-secondary text-base leading-relaxed">{h.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Setup + privacy -->
+  <section class="section-pad border-t border-border">
+    <div class="max-w-5xl mx-auto px-5 md:px-8 grid md:grid-cols-2 gap-12">
+      <div>
+        <span class="font-mono text-sm text-accent-strong tracking-widest uppercase">Setup</span>
+        <h2 class="font-semibold mt-3 mb-6" style="font-size: clamp(1.6rem, 3.2vw, 2rem);">One-time, a few minutes</h2>
+        <ol class="space-y-4 text-text-secondary text-base leading-relaxed">
+          {setup.map((s, i) => (
+            <li class="flex gap-3"><span class="font-mono text-accent-strong shrink-0">{i + 1}.</span><span>{s}</span></li>
+          ))}
+        </ol>
+        <a href={setupDocs} target="_blank" rel="noopener noreferrer" class="ul-grow inline-block mt-6 font-mono text-sm text-accent-strong">Full setup guide →</a>
+      </div>
+      <div>
+        <span class="font-mono text-sm text-accent-strong tracking-widest uppercase">Privacy</span>
+        <h2 class="font-semibold mt-3 mb-6" style="font-size: clamp(1.6rem, 3.2vw, 2rem);">Your files, your Drive</h2>
+        <div class="space-y-4 text-text-secondary text-base leading-relaxed">
+          <p>Files go straight from your Mac to your own Google Drive. There is no server in between and no telemetry.</p>
+          <p>The tool uses the <span class="font-mono text-sm text-text">drive.file</span> scope, so it can only see the files it created, not the rest of your Drive.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-pad border-t border-border">
+    <div class="max-w-2xl mx-auto px-5 md:px-8 text-center">
+      <h2 class="font-semibold mb-5" style="font-size: clamp(1.9rem, 4vw, 2.4rem);">Try it on your Mac</h2>
+      <p class="prose-measure mx-auto text-text-secondary text-lg leading-relaxed mb-9">Free and open source under the MIT license. Issues and ideas are welcome on GitHub.</p>
+      <a href={repo} target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 px-6 py-3 bg-accent text-on-accent rounded-lg font-medium text-base hover:bg-accent-hover transition-colors duration-200">
+        github.com/neebird/open-in-google-docs
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:translate-x-1"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </section>
+</Layout>

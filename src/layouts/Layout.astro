@@ -4,11 +4,13 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;  // link-preview picture, a path under public/
 }
 
 const {
   title = "Oleksandr Shpirko · Python Backend & AI Integration Engineer",
   description = "Python backend & AI integration engineer. 4+ years shipping FastAPI services, LLM voice agents, RAG, and real-time pipelines. 25+ projects delivered, Top Rated on Upwork. Available for remote work (EU).",
+  image,
 } = Astro.props;
 ---
 
@@ -22,6 +24,8 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    {image && <meta property="og:image" content={new URL(image, Astro.site).href} />}
+    {image && <meta name="twitter:card" content="summary_large_image" />}
     <meta name="theme-color" content="#14161A" id="theme-color-meta" />
 
     <!-- Apply stored theme before paint (no flash) -->
@@ -61,14 +65,14 @@ const {
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300 border-b border-transparent">
       <div class="max-w-5xl mx-auto px-5 md:px-8">
         <div class="h-16 flex items-center justify-between">
-          <a href="#top" class="font-mono text-sm font-semibold text-text tracking-tight">
+          <a href="/#top" class="font-mono text-sm font-semibold text-text tracking-tight">
             oleksandr<span class="text-accent-strong">.shpirko</span>
           </a>
 
           <div class="hidden md:flex items-center gap-8">
-            <a href="#work" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">Work</a>
-            <a href="#about" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">About</a>
-            <a href="#contact" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">Contact</a>
+            <a href="/#work" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">Work</a>
+            <a href="/#about" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">About</a>
+            <a href="/#contact" class="ul-grow text-sm text-text-secondary hover:text-text transition-colors duration-200">Contact</a>
 
             <button id="theme-toggle" aria-label="Toggle dark mode" class="w-9 h-9 grid place-items-center rounded-lg border border-border text-text-secondary hover:text-text hover:border-border-strong transition-colors duration-200">
               <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
@@ -85,9 +89,9 @@ const {
 
       <div id="mobile-menu" class="md:hidden hidden border-t border-border bg-bg/95">
         <div class="px-5 py-5 flex flex-col gap-4">
-          <a href="#work" class="text-base text-text-secondary hover:text-text transition-colors">Work</a>
-          <a href="#about" class="text-base text-text-secondary hover:text-text transition-colors">About</a>
-          <a href="#contact" class="text-base text-text-secondary hover:text-text transition-colors">Contact</a>
+          <a href="/#work" class="text-base text-text-secondary hover:text-text transition-colors">Work</a>
+          <a href="/#about" class="text-base text-text-secondary hover:text-text transition-colors">About</a>
+          <a href="/#contact" class="text-base text-text-secondary hover:text-text transition-colors">Contact</a>
         </div>
       </div>
     </nav>
